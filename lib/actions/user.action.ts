@@ -6,8 +6,9 @@ import { connectToDatabase } from '../database'
 import User from '../database/models/user.model'
 import Event from '../database/models/event.model'
 import { revalidatePath } from 'next/cache'
+import Order from '../database/models/order.model'
 
-export const createUser = async (user: CreateUserParams) => {
+export async function createUser(user: CreateUserParams) {
   try {
     await connectToDatabase()
 
@@ -53,10 +54,10 @@ export async function deleteUser(clerkId: string) {
       ),
 
       // Update the 'orders' collection to remove references to the user
-      //   Order.updateMany(
-      //     { _id: { $in: userToDelete.orders } },
-      //     { $unset: { buyer: 1 } }
-      //   ),
+      Order.updateMany(
+        { _id: { $in: userToDelete.orders } },
+        { $unset: { buyer: 1 } }
+      ),
     ])
 
     // Delete user
