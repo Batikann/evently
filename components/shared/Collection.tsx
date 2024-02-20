@@ -2,7 +2,7 @@ import { IEvent } from '@/lib/database/models/event.model'
 import Card from './Card'
 
 type CollectionProps = {
-  data: IEvent
+  data: IEvent[]
   emptyTitle: string
   emptyStateSubText: string
   limit: number
