@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { ICategory } from '@/lib/database/models/category.model'
-import { startTransition, useState } from 'react'
+import { startTransition, useEffect, useState } from 'react'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,6 +21,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Input } from '../ui/input'
+import { createCategory, getAllCategories } from '@/lib/actions/category.action'
 
 type DropdownProps = {
   value?: string
@@ -31,7 +32,23 @@ const Dropdown = ({ value, onChangeHandler }: DropdownProps) => {
   const [categories, setCategories] = useState<ICategory[]>([])
   const [category, setCategory] = useState('')
 
-  const handleAddCategory = () => {}
+  const handleAddCategory = () => {
+    createCategory({
+      categoryName: category.trim(),
+    }).then((category) => {
+      setCategories((prevstate) => [...prevstate, category])
+    })
+  }
+
+  useEffect(() => {
+    const getCategories = async () => {
+      const categoryList = await getAllCategories()
+
+      categoryList && setCategories(categoryList as ICategory[])
+    }
+
+    getCategories()
+  }, [])
 
   return (
     <Select onValueChange={onChangeHandler} defaultValue={value}>
@@ -52,7 +69,7 @@ const Dropdown = ({ value, onChangeHandler }: DropdownProps) => {
 
         <AlertDialog>
           <AlertDialogTrigger className="p-medium-14 flex w-full rounded-sm py-3 pl-8 text-indigo-500 focus:text-indigo-500">
-            Open
+            Add New Category
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
