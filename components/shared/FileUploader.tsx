@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useCallback } from 'react'
-import type { FileWithPath } from '@uploadthing/react'
+
 type FileUploadProps = {
   imageUrl: string
   onFieldChange: (value: string) => void
@@ -17,7 +17,7 @@ const FileUploader = ({
   imageUrl,
   setFiles,
 }: FileUploadProps) => {
-  const onDrop = useCallback((acceptedFiles: FileWithPath[]) => {
+  const onDrop = useCallback((acceptedFiles: File[]) => {
     setFiles(acceptedFiles)
     onFieldChange(convertFileToUrl(acceptedFiles[0]))
   }, [])
